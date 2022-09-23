@@ -1,0 +1,23 @@
+targets:
+  $default:
+    sources:
+      - $package$
+      - lib/$lib$
+      - lib/**.dart
+      - test/**.dart
+    builders:
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - implicit_dynamic_parameter
+      json_serializable:
+        generate_for:
+            - lib/**.codegen.dart
+        options:
+          field_rename: snake
+      freezed:freezed:
+        generate_for:
+            - lib/**.codegen.dart
+      mockito|mockBuilder:
+        generate_for:
+          - test/**.dart

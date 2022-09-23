@@ -1,0 +1,16 @@
+include: package:very_good_analysis/analysis_options.3.0.1.yaml
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+  exclude:
+    - build/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+linter:
+  rules:
+    file_names: false
+    public_member_api_docs: false
+    cascade_invocations: false
+    non_constant_identifier_names: false
+    unnecessary_await_in_return: false
+
