@@ -8,7 +8,7 @@ part 'user_model.codegen.g.dart';
 class UserModel with _$UserModel {
   factory UserModel({
     required int id,
-    required String name,
+    required String nama,
     required String userName,
     required String password,
   }) = _UserModel;
@@ -20,7 +20,7 @@ class UserModel with _$UserModel {
 extension UserModelX on UserModel {
   UserEntity toUserEntity() => UserEntity(
         id: id,
-        name: name,
+        nama: nama,
         userName: userName,
         password: password,
       );

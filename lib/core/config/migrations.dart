@@ -1,11 +1,14 @@
-import 'package:mahasiswa/core/services/orm.dart';
+import 'dart:developer';
+
+import 'package:postgres/postgres.dart';
 
 class Migrations {
-  const Migrations._();
+  Migrations(this.database);
+  final PostgreSQLConnection database;
 
-  static Future<void> migrateMahasiswa() async {
-    final mahasiswaServiceDB = ORM();
-    const query = '''
+  Future<bool> migrateMahasiswa() async {
+    try {
+      const query = '''
       CREATE TABLE IF NOT EXISTS mahasiswa (
         id BIGSERIAL PRIMARY KEY,
         nomor_induk_mahasiswa TEXT NOT NULL,
@@ -16,6 +19,38 @@ class Migrations {
         status integer NOT NULL DEFAULT '0'
       )
     ''';
-    await mahasiswaServiceDB.migrate(query);
+      await database.query(query);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> migrateUser() async {
+    try {
+      const query = '''
+      CREATE TABLE IF NOT EXISTS users (
+        id BIGSERIAL PRIMARY KEY,
+        nama TEXT NOT NULL,
+        user_name TEXT NOT NULL,
+        password TEXT NOT NULL
+      )
+    ''';
+      await database.query(query);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> doMigrate() async {
+    final map = {
+      'mahasiswa': await migrateMahasiswa(),
+      'users': await migrateUser(),
+    };
+
+    return map;
   }
 }

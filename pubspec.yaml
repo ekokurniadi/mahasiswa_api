@@ -13,7 +13,6 @@ dependencies:
   equatable: ^2.0.5
   freezed: ^2.1.1
   freezed_annotation: ^2.1.0
-  get_it: ^7.2.0
   json_serializable: ^6.4.0
   postgres: ^2.5.2
 

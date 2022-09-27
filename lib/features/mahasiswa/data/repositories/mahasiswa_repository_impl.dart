@@ -38,4 +38,9 @@ class MahasiswaRepositoryImpl extends MahasiswaRepository {
       id,
     );
   }
+
+  @override
+  Future<Either<Failure, MahasiswaEntity>> getMahasiswaById(int id) async {
+    return await _mahasiswaLocalDataSource.getMahasiswaByID(id);
+  }
 }

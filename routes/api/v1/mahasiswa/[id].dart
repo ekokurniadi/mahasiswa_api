@@ -8,6 +8,8 @@ Future<Response> onRequest(RequestContext context, String id) async {
     return await Mahasiswa.updateMahasiswa(context, id);
   } else if (context.HttpMethodDelete) {
     return await Mahasiswa.deleteMahasiswa(context, id);
+  } else if (context.HttpMethodGet) {
+    return await Mahasiswa.getMahasiswaByID(context, id);
   }
   return ResponseHelper.methodNotAllowed();
 }

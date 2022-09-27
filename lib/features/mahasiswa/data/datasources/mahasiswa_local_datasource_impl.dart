@@ -49,9 +49,17 @@ class MahasiswaLocalDataSourceImpl extends MahasiswaLocalDataSource {
   }
 
   @override
-  Future<Either<Failure, MahasiswaEntity>> getMahasiswaByID(int id) {
-    // TODO: implement getMahasiswaByID
-    throw UnimplementedError();
+  Future<Either<Failure, MahasiswaEntity>> getMahasiswaByID(int id) async {
+    try {
+      final mahasiswa = await _mahasiswaServiceDB.findByID('mahasiswa', id: id);
+      return right(
+        MahasiswaModel.fromJson(
+          mahasiswa.first['mahasiswa']!,
+        ).toMahasiswaEntity(),
+      );
+    } catch (e) {
+      return left(DatabaseFailure(message: e.toString()));
+    }
   }
 
   @override
@@ -65,7 +73,7 @@ class MahasiswaLocalDataSourceImpl extends MahasiswaLocalDataSource {
         RETURNING id
       ''';
       final inserted =
-          await _mahasiswaServiceDB.query(query, data.toJson()).then(
+          await _mahasiswaServiceDB.insert(query, data.toJson()).then(
                 (value) async => await _mahasiswaServiceDB.findByID(
                   'mahasiswa',
                   id: value,

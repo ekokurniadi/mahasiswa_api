@@ -13,4 +13,5 @@ linter:
     cascade_invocations: false
     non_constant_identifier_names: false
     unnecessary_await_in_return: false
+    one_member_abstracts: false
 

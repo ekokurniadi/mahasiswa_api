@@ -12,4 +12,5 @@ abstract class MahasiswaRepository {
     MahasiswaEntity mahasiswaEntity,
     int id,
   );
+  Future<Either<Failure, MahasiswaEntity>> getMahasiswaById(int id);
 }

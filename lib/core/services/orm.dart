@@ -12,7 +12,7 @@ class ORM {
     return result;
   }
 
-  Future<int> query(String query, Map<String, dynamic> param) async {
+  Future<int> insert(String query, Map<String, dynamic> param) async {
     final insertedId =
         await App.database.query(query, substitutionValues: param);
     return insertedId.last[0] as int;

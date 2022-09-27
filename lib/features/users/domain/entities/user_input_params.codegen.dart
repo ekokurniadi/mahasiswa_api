@@ -6,7 +6,6 @@ part 'user_input_params.codegen.g.dart';
 @freezed
 class UserInputParams with _$UserInputParams {
   factory UserInputParams({
-    required String name,
     required String userName,
     required String password,
   }) = _UserInputParams;

@@ -8,24 +8,38 @@ import 'package:mahasiswa/features/mahasiswa/domain/repositories/mahasiswa_repos
 import 'package:mahasiswa/features/mahasiswa/domain/usecases/create_mahasiswa.dart';
 import 'package:mahasiswa/features/mahasiswa/domain/usecases/delete_mahasiswa.dart';
 import 'package:mahasiswa/features/mahasiswa/domain/usecases/get_all_mahasiswa.dart';
+import 'package:mahasiswa/features/mahasiswa/domain/usecases/get_by_id_mahasiswa.dart';
 import 'package:mahasiswa/features/mahasiswa/domain/usecases/update_mahasiswa.dart';
+import 'package:mahasiswa/features/users/data/datasources/users_local_datasource.dart';
+import 'package:mahasiswa/features/users/data/datasources/users_local_datasource_impl.dart';
+import 'package:mahasiswa/features/users/data/repositories/users_repository_impl.dart';
+import 'package:mahasiswa/features/users/domain/repositories/users_repository.dart';
+import 'package:mahasiswa/features/users/domain/usescases/login_usecases.dart';
 
 Handler middleware(Handler handler) {
   return handler
       .use(requestLogger())
       .use(provider<JwtService>((_) => jwtService))
       .use(provider<ORM>((_) => orm))
+      .use(provider<UsersLocalDataSource>((_) => usersLocalDataSource))
+      .use(provider<UsersRepository>((_) => usersRepository))
+      .use(provider<LoginUsesCases>((_) => loginUsesCases))
       .use(provider<MahasiswaLocalDataSource>((_) => mahasiswaLocalDataSource))
       .use(provider<MahasiswaRepository>((_) => mahasiswaRepository))
       .use(provider<CreateMahasiswaUsesCases>((_) => createMahasiswaUsesCases))
       .use(provider<UpdateMahasiswaUsesCases>((_) => updateMahasiswaUsesCases))
       .use(provider<GetAllMahasiswaUsesCases>((_) => getAllMahasiswaUsesCases))
+      .use(
+        provider<GetByIdMahasiswaUsesCases>((_) => getByIdMahasiswaUsesCases),
+      )
       .use(provider<DeleteMahasiswaUsesCases>((_) => deleteMahasiswaUsesCases));
 }
 
 /// initialize instance
 final JwtService jwtService = JwtServiceImpl();
 final ORM orm = ORM();
+
+/// Mahasiswa
 final MahasiswaLocalDataSource mahasiswaLocalDataSource =
     MahasiswaLocalDataSourceImpl(
   mahasiswaServiceDB: orm,
@@ -48,4 +62,19 @@ final DeleteMahasiswaUsesCases deleteMahasiswaUsesCases =
 final UpdateMahasiswaUsesCases updateMahasiswaUsesCases =
     UpdateMahasiswaUsesCases(
   mahasiswaRepository: mahasiswaRepository,
+);
+final GetByIdMahasiswaUsesCases getByIdMahasiswaUsesCases =
+    GetByIdMahasiswaUsesCases(
+  mahasiswaRepository: mahasiswaRepository,
+);
+
+/// Users
+final UsersLocalDataSource usersLocalDataSource =
+    UsersLocalDataSourceImpl(usersServiceDB: orm);
+
+final UsersRepository usersRepository = UserRepositoryImpl(
+  usersLocalDataSource: usersLocalDataSource,
+);
+final LoginUsesCases loginUsesCases = LoginUsesCases(
+  usersRepository: usersRepository,
 );
