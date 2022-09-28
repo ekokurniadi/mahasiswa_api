@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Auth</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../assets/css/login.css">
+  </head>
+  <body onload="init()">
+    <div class="loading" id="loading"></div>
+    <div class="loading-image" id="loading-image">
+      <img
+        src="https://c.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
+        alt=""
+        width="50px"
+      />
+    </div>
+    <div class="container">
+      <div class="row d-flex">
+        <div class="col-md-12 d-flex justify-content-center py-5">
+          <div class="box d-flex justify-content-center">
+            <div>
+              <div class="logo">
+                <a href="/">
+                    <img
+                      class="logo-img"
+                      src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png"
+                      alt=""
+                    />
+                </a>
+              </div>
+              <div class="group mt-5">
+                <input type="text" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Username</label>
+              </div>
+              <div class="group mt-5">
+                <input type="text" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Password</label>
+              </div>
+              <button
+                class="btn btn-block btn-primary mt-3"
+                style="background-color: #5264ae"
+                onclick="doLogin()"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var loading = document.getElementById("loading");
+    var loadingImage = document.getElementById("loading-image");
+
+    function init() {
+      loading.style.display = "none";
+      loadingImage.style.display = "none";
+    }
+
+    function doLogin() {
+      loading.style.display = "flex";
+      loadingImage.style.display = "flex";
+      setTimeout(() => {
+        loading.style.display = "none";
+        loadingImage.style.display = "none";
+      }, 1000);
+    }
+
+  </script>
+</html>
