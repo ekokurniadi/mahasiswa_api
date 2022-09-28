@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:dart_frog/dart_frog.dart';
+import 'package:mahasiswa/core/config/app.dart';
+import 'package:mahasiswa/core/helpers/environment.dart';
 import 'package:mahasiswa/core/services/jwt.dart';
 import 'package:mahasiswa/core/services/orm.dart';
 import 'package:mahasiswa/features/mahasiswa/data/datasources/mahasiswa_local_datasource.dart';
@@ -18,7 +22,12 @@ import 'package:mahasiswa/features/users/domain/usescases/login_usecases.dart';
 
 Handler middleware(Handler handler) {
   return handler
-      .use(requestLogger())
+      .use(
+        requestLogger(
+          logger: (message, isError) =>
+              App.environment == ENVIRONMENT.dev ? log(message) : '',
+        ),
+      )
       .use(provider<JwtService>((_) => jwtService))
       .use(provider<ORM>((_) => orm))
       .use(provider<UsersLocalDataSource>((_) => usersLocalDataSource))

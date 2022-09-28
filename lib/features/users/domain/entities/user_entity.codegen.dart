@@ -15,6 +15,13 @@ class UserEntity with _$UserEntity {
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
+
+  factory UserEntity.initial() => UserEntity(
+        id: 0,
+        nama: '',
+        userName: '',
+        password: '',
+      );
 }
 
 extension UserEntityX on UserEntity {

@@ -18,6 +18,16 @@ class MahasiswaEntity with _$MahasiswaEntity {
 
   factory MahasiswaEntity.fromJson(Map<String, dynamic> json) =>
       _$MahasiswaEntityFromJson(json);
+      
+  factory MahasiswaEntity.initial()=>MahasiswaEntity(
+        id: 0,
+        nomorIndukMahasiswa: '',
+        nama: '',
+        umur: 0,
+        tanggalLahir: '',
+        alamat: '',
+        status: 0,
+      );
 }
 
 extension MahasiswaEntityX on MahasiswaEntity {

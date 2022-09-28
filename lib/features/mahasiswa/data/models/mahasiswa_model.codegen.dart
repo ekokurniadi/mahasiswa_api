@@ -18,6 +18,8 @@ class MahasiswaModel with _$MahasiswaModel {
 
   factory MahasiswaModel.fromJson(Map<String, dynamic> json) =>
       _$MahasiswaModelFromJson(json);
+  
+  
 
 }
 
