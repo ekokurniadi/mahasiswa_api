@@ -140,13 +140,13 @@
     background-color: rgb(63, 60, 60);
     opacity: 50%;
     z-index: 2;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
   }
   .loading-image {
     position: absolute;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999;

@@ -1,0 +1,117 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>Edit Data Mahasiswa</h6>
+                </div>
+                <div class="card-body table-responsive" id="mahasiswa-form">
+                    <a href="/web/dashboard/" class="btn btn-secondary btn-sm my-2 ml-3">Kembali</a>
+                    <div class="form-group">
+                        <label class="col-md-2">Nim</label>
+                        <div class="col-md-10"><input type="text" class="form-control"
+                                v-model="form.nomor_induk_mahasiswa" placeholder="Nim"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Nama</label>
+                        <div class="col-md-10"><input type="text" class="form-control" v-model="form.nama"
+                                placeholder="Nama"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Umur</label>
+                        <div class="col-md-10"><input type="text" @keypress="allowNumberOnly" class="form-control"
+                                v-model="form.umur" placeholder="0"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Tanggal Lahir</label>
+                        <div class="col-md-10"><input type="date" class="form-control" v-model="form.tanggal_lahir">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Alamat</label>
+                        <div class="col-md-10"><input type="text" class="form-control" v-model="form.alamat"
+                                placeholder="Alamat"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Alamat</label>
+                        <div class="col-md-10">
+                            <select name="status" id="status" class="form-control" v-model="form.status">
+                                <option value="0">Tidak Aktif</option>
+                                <option value="1">Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button class="btn btn-sm btn-primary" @click="editMahasiswa">Edit</button>
+                            <a href="/web/dashboard/" class="btn btn-sm btn-danger">Batal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+<script>
+
+    new Vue({
+        el: '#mahasiswa-form',
+        data: {
+            form: {
+                nomor_induk_mahasiswa: '',
+                nama: '',
+                umur: '',
+                tanggal_lahir: '',
+                alamat: '',
+                status: 0,
+            },
+            token: localStorage.getItem('token'),
+            param: window.location.pathname.split('/').pop()
+        },
+        created: function () {
+
+            var user = localStorage.getItem('users')
+            var token = localStorage.getItem('token')
+
+            if (user == undefined || user == '' || token == undefined || token == '') {
+                window.location = '/'
+            } else {
+                this.getMahasiswaByID()
+            }
+
+        },
+        methods: {
+            getMahasiswaByID: async function () {
+                axios.get(`http://localhost:8080/api/v1/mahasiswa/${this.param}`, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                }).then((res) => {
+                    this.form = res.data.data
+
+                }).catch((error) => {
+                    alert(error)
+                })
+            },
+            editMahasiswa: async function () {
+                this.form.umur = parseInt(this.form.umur)
+                this.form.status = parseInt(this.form.status)
+                axios.put(`http://localhost:8080/api/v1/mahasiswa/${this.param}`, this.form, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                }).then((res) => {
+                    alert(res.data.message);
+                    window.location = '/web/dashboard'
+                }).catch((error) => {
+                    alert(error)
+                })
+            },
+            allowNumberOnly: function ($event) {
+                let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+                if ((keyCode < 48 || keyCode > 57) && keyCode === 46 ) { // 46 is dot
+                    $event.preventDefault();
+                }
+            }
+        },
+    })
+</script>

@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "axios": "^0.27.2"
+  },
+  "name": "mahasiswa",
+  "description": "[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link] [![License: MIT][license_badge]][license_link] [![Powered by Dart Frog](https://img.shields.io/endpoint?url=https://tinyurl.com/dartfrog-badge)](https://dartfrog.vgv.dev)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekokurniadi/mahasiswa_api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekokurniadi/mahasiswa_api/issues"
+  },
+  "homepage": "https://github.com/ekokurniadi/mahasiswa_api#readme"
+}

@@ -11,44 +11,230 @@
       integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
       crossorigin="anonymous"
     />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <style>
-      .nav-link{
+      .nav-link {
         color: white !important;
         font-weight: 600;
         padding-top: 12px;
       }
+      .navbar{
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+       
+      }
+      body {
+        margin: 0;
+      }
+
+      .sidebar {
+        margin-top: 70px;
+        padding: 0;
+        width: 200px;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100%;
+        display: block;
+        overflow: auto;
+        z-index: 99;
+
+      }
+
+      .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+      }
+
+      .sidebar a.active {
+        background-color: #343a40;
+        color: white;
+      }
+
+
+      div.content {
+        margin-left: 205px;
+        padding: 75px 15px;
+        height: 1000px;
+      }
+
+      @media screen and (max-width: 700px) {
+        .sidebar {
+          margin-top: 0;
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        div.content {
+       
+        padding: 10px 10px;
+       
+      }
+      .navbar{
+        position: relative;
+        
+       
+      }
+        .sidebar a {
+          float: left;
+        }
+        div.content {
+          margin-left: 0;
+        }
+      }
+
+      @media screen and (max-width: 400px) {
+        .sidebar a {
+          text-align: center;
+          float: none;
+        }
+      }
     </style>
   </head>
+
   <body>
-    <section class="my-navbar">
-      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #29b6f6;">
-        <a class="navbar-brand" href="#">
-            <img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png" alt="" width="120px">
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ">
-            <li class="nav-item active">
-              <a class="nav-link" href="#"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/web/login">Login</a>
-            </li>
-          </ul>
+    <section class="my-navbar" id="nav-app">
+      <nav
+        class="navbar navbar-expand-lg navbar-light"
+        style="background-color: #29b6f6"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img
+              src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png"
+              alt=""
+              width="120px"
+            />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active" v-if="menuActiveIndex == 0">
+                <a class="nav-link" href="/"
+                @click="gotoHome">Home <span class="sr-only">(current)</span></a
+                >
+              </li>
+              <li class="nav-item" v-if="isLogin==false">
+                <a class="nav-link" href="/web/login">Login</a>
+              </li>
+              <li class="nav-item" v-if="isLogin && menuActiveIndex == 0">
+                <a class="nav-link" href="/web/dashboard" @click="gotoMahasiswa">Dashboard</a>
+              </li>
+            </ul>
+            <div v-if="isLogin" class="d-flex align-items-center">
+              <img
+                width="50px"
+                src="https://assets.website-files.com/60093243de99e18a0eb51d8c/601d29f5cf152cc2ce8cd4c8_Luca%20Campanella.png"
+                alt=""
+              />
+              <div>
+                <span class="text-dark ml-1" style="font-weight: bold"
+                  >{{username}}</span
+                >
+                <br />
+                <a
+                  class="text-white ml-1"
+                  style="
+                    text-decoration: none;
+                    font-weight: 600;
+                    cursor: pointer;
+                  "
+                  @click="logout"
+                  >Logout</a
+                >
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
+      <div class="sidebar" v-if="menuActiveIndex == 0 ? false : true">
+        <a
+          :class="{ 'active' : menuActiveIndex == 0 }"
+          href="/"
+          @click="gotoHome"
+          >Home</a
+        >
+        <a
+          :class="{'active' : menuActiveIndex == 1 }"
+          href="/web/dashboard"
+          @click="gotoMahasiswa"
+          >Mahasiswa</a
+        >
+        <a
+          :class="{'active' : menuActiveIndex == 2 }"
+          href="users"
+          @click="gotoUsers"
+          >Users</a
+        >
+      </div>
     </section>
+
+    <script>
+      new Vue({
+        el: "#nav-app",
+        data: {
+          username: "",
+          isLogin: false,
+          menuActiveIndex: 0,
+        },
+        created: function () {
+          var user = localStorage.getItem("users");
+          var token = localStorage.getItem("token");
+          if (
+            user != undefined &&
+            user != "" &&
+            token != undefined &&
+            token != ""
+          ) {
+            this.username = JSON.parse(user)["nama"];
+            this.isLogin = true;
+            
+            this.menuActiveIndex = parseInt(
+              localStorage.getItem("menu_active")
+            );
+          }
+        },
+        methods: {
+          gotoHome: function () {
+            this.menuActiveIndex = 0;
+            localStorage.setItem("menu_active", this.menuActiveIndex);
+            console.log(this.menuActiveIndex);
+          },
+          gotoMahasiswa: function () {
+            this.menuActiveIndex = 1;
+            localStorage.setItem("menu_active", this.menuActiveIndex);
+            console.log(this.menuActiveIndex);
+          },
+          gotoUsers: function () {
+            this.menuActiveIndex = 2;
+            localStorage.setItem("menu_active", this.menuActiveIndex);
+            console.log(this.menuActiveIndex);
+          },
+          logout: function () {
+            var isConfirm = confirm(
+              "Apakah anda yakin ingin mengakhiri sesi login ?"
+            );
+            if (isConfirm) {
+              localStorage.clear();
+              window.location = "/";
+            }
+          },
+        },
+      });
+    </script>
   </body>
 </html>

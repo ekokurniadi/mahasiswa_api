@@ -11,50 +11,54 @@
       integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="../assets/css/login.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
   </head>
-  <body onload="init()">
-    <div class="loading" id="loading"></div>
-    <div class="loading-image" id="loading-image">
-      <img
-        src="https://c.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
-        alt=""
-        width="50px"
-      />
-    </div>
-    <div class="container">
-      <div class="row d-flex">
-        <div class="col-md-12 d-flex justify-content-center py-5">
-          <div class="box d-flex justify-content-center">
-            <div>
-              <div class="logo">
-                <a href="/">
+  <body>
+    <div id="app">
+      <div class="loading" v-if="showLoading" id="loading"></div>
+      <div class="loading-image" v-if="showLoading" id="loading-image">
+        <img
+          src="https://c.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
+          alt=""
+          width="50px"
+        />
+      </div>
+      <div class="container">
+        <div class="row d-flex">
+          <div class="col-md-12 d-flex justify-content-center py-5">
+            <div class="box d-flex justify-content-center">
+              <div>
+                <div class="logo">
+                  <a href="/">
                     <img
                       class="logo-img"
                       src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png"
                       alt=""
                     />
-                </a>
+                  </a>
+                </div>
+                <div class="group mt-5">
+                  <input type="text" required v-model="form.user_name" />
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Username</label>
+                </div>
+                <div class="group mt-5">
+                  <input type="text" required v-model="form.password" />
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label>Password</label>
+                </div>
+                <button
+                  class="btn btn-block btn-primary mt-3"
+                  style="background-color: #5264ae"
+                  @click="login"
+                >
+                  Login
+                </button>
               </div>
-              <div class="group mt-5">
-                <input type="text" required />
-                <span class="highlight"></span>
-                <span class="bar"></span>
-                <label>Username</label>
-              </div>
-              <div class="group mt-5">
-                <input type="text" required />
-                <span class="highlight"></span>
-                <span class="bar"></span>
-                <label>Password</label>
-              </div>
-              <button
-                class="btn btn-block btn-primary mt-3"
-                style="background-color: #5264ae"
-                onclick="doLogin()"
-              >
-                Login
-              </button>
             </div>
           </div>
         </div>
@@ -62,22 +66,47 @@
     </div>
   </body>
   <script>
-    var loading = document.getElementById("loading");
-    var loadingImage = document.getElementById("loading-image");
-
-    function init() {
-      loading.style.display = "none";
-      loadingImage.style.display = "none";
-    }
-
-    function doLogin() {
-      loading.style.display = "flex";
-      loadingImage.style.display = "flex";
-      setTimeout(() => {
-        loading.style.display = "none";
-        loadingImage.style.display = "none";
-      }, 1000);
-    }
-
+    new Vue({
+      el: "#app",
+      data: {
+        showLoading: false,
+        form: {
+          user_name: "",
+          password: "",
+        },
+      },
+      created: function () {
+          var user = localStorage.getItem('users')
+          var token = localStorage.getItem('token')
+          this.username = JSON.parse(user)['nama']
+          if(user != undefined && user != '' && token != undefined && token != ''){
+            window.location = '/web/dashboard'
+          }
+      },
+      methods: {
+        login: async function (event) {
+          if(this.form.user_name != '' && this.form.password != ''){
+            this.showLoading = true;
+            axios
+              .post("http://localhost:8080/api/v1/users/auth/login", this.form)
+              .then((res) => {
+                setTimeout(() => {
+                  this.showLoading = false;
+                  localStorage.setItem("users", JSON.stringify(res.data.data));
+                  localStorage.setItem("token", res.data.token);
+                  window.location = '/web/dashboard'
+                }, 500);
+              })
+              .catch((e) => {
+                this.showLoading = false;
+                alert(e);
+              });
+          }else{
+            alert('Isi data dengan lengkap!')
+            return;
+          }
+        },
+      },
+    });
   </script>
 </html>

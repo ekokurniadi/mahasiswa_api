@@ -1,0 +1,104 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>Data Mahasiswa</h6>
+                </div>
+                <div class="card-body table-responsive">
+                    <a href="/web/mahasiswa" class="btn btn-primary btn-sm my-2">Tambah</a>
+                    <table class="table table-bordered table-striped" id="mahasiswa-table">
+                        <thead>
+                            <tr>
+                                <th width="20px">No</th>
+                                <th>NIM</th>
+                                <th>Nama</th>
+                                <th>Umur</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Alamat</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data,index) of listMahasiswa">
+                                <td>{{index+1}}</td>
+                                <td>{{data.nomor_induk_mahasiswa}}</td>
+                                <td>{{data.nama}}</td>
+                                <td>{{data.umur}}</td>
+                                <td>{{data.tanggal_lahir | formatDate}}</td>
+                                <td>{{data.alamat}}</td>
+                                <td>{{data.status == 1 ? 'Aktif' :'Tidak Aktif' }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" @click="hapus(data.id)">
+                                        Hapus
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" @click="edit(data.id)">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    Vue.filter('formatDate', function (value) {
+        if (value) {
+            return moment(String(value)).format('DD/MM/YYYY')
+        }
+    });
+</script>
+<script>
+
+    new Vue({
+        el: '#mahasiswa-table',
+        data: {
+            listMahasiswa: [],
+            token: localStorage.getItem('token')
+        },
+        created: function () {
+            var user = localStorage.getItem('users')
+            var token = localStorage.getItem('token')
+
+            if (user == undefined || user == '' || token == undefined || token == '') {
+                window.location = '/'
+            } else {
+                this.getMahasiswa()
+            }
+
+        },
+        methods: {
+            getMahasiswa: async function () {
+                axios.get('http://localhost:8080/api/v1/mahasiswa', {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                }).then((res) => {
+                    this.listMahasiswa = res.data.data
+
+                }).catch((error) => {
+                    alert(error)
+                })
+            },
+            hapus: function (id) {
+                var isConfirm = confirm('Apakah anda yakin ingin menghapus data?')
+                if (isConfirm) {
+                    axios.delete(`http://localhost:8080/api/v1/mahasiswa/${id}`, {
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    }).then((res) => {
+                        this.getMahasiswa()
+                        alert(res.data.message)
+                    }).catch((error) => {
+                        alert(error)
+                    })
+                }
+            },
+            edit:function(id){
+                window.location =`/web/mahasiswa/${id}`
+            }
+
+        },
+    })
+</script>
