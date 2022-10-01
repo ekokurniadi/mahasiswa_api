@@ -16,7 +16,7 @@ dependencies:
   json_serializable: ^6.4.0
   path: ^1.8.2
   postgres: ^2.5.2
-
+ 
 dev_dependencies:
   build_runner: ^2.2.1
   mocktail: ^0.3.0

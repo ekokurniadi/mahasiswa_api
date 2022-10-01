@@ -6,12 +6,12 @@
 pubspec.lock
 
 # Files and directories created by dart_frog
-build/
-.dart_frog
+# build/
+# .dart_frog
 
 # Test related files
 coverage/
 
 # Freezed
-**.freezed.dart
-**.g.dart
+# **.freezed.dart
+# **.g.dart
