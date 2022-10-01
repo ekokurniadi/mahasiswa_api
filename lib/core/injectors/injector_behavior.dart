@@ -1,4 +1,3 @@
-
 import 'package:mahasiswa/core/services/jwt.dart';
 import 'package:mahasiswa/core/services/orm.dart';
 import 'package:mahasiswa/features/mahasiswa/data/datasources/mahasiswa_local_datasource.dart';
@@ -14,7 +13,12 @@ import 'package:mahasiswa/features/users/data/datasources/users_local_datasource
 import 'package:mahasiswa/features/users/data/datasources/users_local_datasource_impl.dart';
 import 'package:mahasiswa/features/users/data/repositories/users_repository_impl.dart';
 import 'package:mahasiswa/features/users/domain/repositories/users_repository.dart';
+import 'package:mahasiswa/features/users/domain/usescases/create_user.dart';
+import 'package:mahasiswa/features/users/domain/usescases/delete_user.dart';
+import 'package:mahasiswa/features/users/domain/usescases/get_all_user.dart';
+import 'package:mahasiswa/features/users/domain/usescases/get_by_id_user.dart';
 import 'package:mahasiswa/features/users/domain/usescases/login_usecases.dart';
+import 'package:mahasiswa/features/users/domain/usescases/update_user.dart';
 
 /// initialize instance
 final JwtService jwtService = JwtServiceImpl();
@@ -57,5 +61,20 @@ final UsersRepository usersRepository = UserRepositoryImpl(
   usersLocalDataSource: usersLocalDataSource,
 );
 final LoginUsesCases loginUsesCases = LoginUsesCases(
+  usersRepository: usersRepository,
+);
+final CreateUserUsesCases createUserUsesCases = CreateUserUsesCases(
+  usersRepository: usersRepository,
+);
+final GetAllUserUsesCases getAllUserUsesCases = GetAllUserUsesCases(
+  usersRepository: usersRepository,
+);
+final GetByIdUserUsesCases getByIdUserUsesCases = GetByIdUserUsesCases(
+  usersRepository: usersRepository,
+);
+final UpdateUserUsesCases updateUserUsesCases = UpdateUserUsesCases(
+  usersRepository: usersRepository,
+);
+final DeleteUserUsesCases deleteUserUsesCases = DeleteUserUsesCases(
   usersRepository: usersRepository,
 );

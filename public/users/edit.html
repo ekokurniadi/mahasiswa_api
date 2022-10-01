@@ -1,0 +1,92 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>Edit Data User</h6>
+                </div>
+                <div class="card-body table-responsive" id="user-form">
+                    <a href="/web/users/" class="btn btn-secondary btn-sm my-2 ml-3">Kembali</a>
+                   
+                    <div class="form-group">
+                        <label class="col-md-2">Nama</label>
+                        <div class="col-md-10"><input type="text" class="form-control" v-model="form.nama"
+                                placeholder="Nama"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Username</label>
+                        <div class="col-md-10"><input type="text" class="form-control" v-model="form.user_name"
+                                placeholder="Nama"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">Password</label>
+                        <div class="col-md-10"><input type="text" class="form-control" v-model="form.password"
+                                placeholder="Nama"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button class="btn btn-sm btn-primary" @click="editUser">Edit</button>
+                            <a href="/web/users/" class="btn btn-sm btn-danger">Batal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+</script>
+<script>
+
+    new Vue({
+        el: '#user-form',
+        data: {
+            form: {
+              
+                nama: '',
+                user_name: '',
+                password: '',
+               
+            },
+            token: localStorage.getItem('token'),
+            param: window.location.pathname.split('/').pop()
+        },
+        created: function () {
+
+            var user = localStorage.getItem('users')
+            var token = localStorage.getItem('token')
+
+            if (user == undefined || user == '' || token == undefined || token == '') {
+                window.location = '/'
+            } else {
+                this.getUserByID()
+            }
+
+        },
+        methods: {
+            getUserByID: async function () {
+                axios.get(`http://localhost:8080/api/v1/users/${this.param}`, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                }).then((res) => {
+                    this.form = res.data.data
+                }).catch((error) => {
+                    alert(error)
+                })
+            },
+            editUser: async function () {
+               
+                axios.put(`http://localhost:8080/api/v1/users/${this.param}`, this.form, {
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                }).then((res) => {
+                    alert(res.data.message);
+                    window.location = '/web/users'
+                }).catch((error) => {
+                    alert(error)
+                })
+            },
+            
+        },
+    })
+</script>
