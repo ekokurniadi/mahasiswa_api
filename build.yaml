@@ -18,6 +18,3 @@ targets:
       freezed:freezed:
         generate_for:
             - lib/**.codegen.dart
-      mockito|mockBuilder:
-        generate_for:
-          - test/**.dart
