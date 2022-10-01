@@ -1,5 +1,4 @@
 
-import 'dart:io';
 
 import 'package:mahasiswa/core/config/app.dart';
 import 'package:mahasiswa/core/helpers/constant_helper.dart';
@@ -19,7 +18,6 @@ class DatabaseConfig {
   }
 
   Future<PostgreSQLConnection> _setConnection() async {
-    final env  = Platform.environment;
     return App.environment == ENVIRONMENT.dev
         ? PostgreSQLConnection(
             ConstantHelper.host,
