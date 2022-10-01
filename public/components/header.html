@@ -202,10 +202,14 @@
           ) {
             this.username = JSON.parse(user)["nama"];
             this.isLogin = true;
-            
-            this.menuActiveIndex = parseInt(
-              localStorage.getItem("menu_active")
-            );
+            if(localStorage.getItem("menu_active") == undefined || localStorage.getItem("menu_active") ==''){
+              this.menuActiveIndex = 1;
+              localStorage.setItem("menu_active",this.menuActiveIndex)
+            }else{
+              this.menuActiveIndex = parseInt(
+                localStorage.getItem("menu_active")
+              );
+            }
           }
         },
         methods: {

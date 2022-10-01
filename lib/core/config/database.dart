@@ -22,11 +22,11 @@ class DatabaseConfig {
     final env  = Platform.environment;
     return App.environment == ENVIRONMENT.dev
         ? PostgreSQLConnection(
-            ConstantHelper.hostProd,
-            ConstantHelper.portProd,
-            ConstantHelper.databaseNameProd,
-            username: ConstantHelper.userNameProd,
-            password: ConstantHelper.passwordProd,
+            ConstantHelper.host,
+            ConstantHelper.port,
+            ConstantHelper.databaseName,
+            username: ConstantHelper.userName,
+            password: ConstantHelper.password,
           )
         : PostgreSQLConnection(
             ConstantHelper.hostProd,
