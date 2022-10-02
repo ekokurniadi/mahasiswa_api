@@ -1,40 +1,19 @@
-# version: '3'
-# services:
-#     app-database:
-#         image: postgres:latest
-#         ports:
-#             - 5432:5432
-#         environment:
-#             - POSTGRES_USER=postgres
-#             - POSTGRES_PASSWORD=password
-#             - POSTGRES_DB=kampus
-#         volumes:
-#             - ./postgres/kampus.sql:/docker-entrypoint-initdb.d/kampus.sql
-#     mahasiswa-backend:
-#         image: new-kampus:latest
-#         ports:
-#             - 8080:8080
-#         restart: on-failure 
-#         depends_on:
-#             - app-database
 version: '3'
 services:
-    # app-database:
-    #     image: postgres:latest
-    #     ports:
-    #         - 5432:5432
-    #     environment:
-    #         - POSTGRES_USER=postgres
-    #         - POSTGRES_PASSWORD=password
-    #         - POSTGRES_DB=kampus
-    #     volumes:
-    #         - ./postgres/kampus.sql:/docker-entrypoint-initdb.d/kampus.sql
-    web:
+    app-database:
+        image: postgres:latest
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=kampus
+        volumes:
+            - ./postgres/kampus.sql:/docker-entrypoint-initdb.d/kampus.sql
+    mahasiswa-backend:
         image: new-kampus:latest
         ports:
             - 8080:8080
-        restart: on-failure
-        volumes: 
-            - ./webapp:/opt/webapp
-        # depends_on:
-        #     - app-database
+        restart: on-failure 
+        depends_on:
+            - app-database
