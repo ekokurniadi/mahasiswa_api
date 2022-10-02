@@ -9,5 +9,5 @@ Future<Response> onRequest(RequestContext context) async {
       .setContent(folderName: '', fileName: 'index.html')
       .setFooter()
       .buildTemplate();
-  return Response(body: html, headers: {'Content-type': 'text/html'});
+  return Response(body: html,headers: {'Content-type':'text/html'});
 }

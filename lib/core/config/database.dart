@@ -32,6 +32,7 @@ class DatabaseConfig {
             ConstantHelper.databaseNameProd,
             username: ConstantHelper.userNameProd,
             password: ConstantHelper.passwordProd,
+            useSSL: true,
           );
   }
 

@@ -12,7 +12,7 @@ class App {
   static late ENVIRONMENT environment;
 
   static Future<void> init() async {
-    environment = ENVIRONMENT.dev;
+    environment = ENVIRONMENT.prod;
     database = await DatabaseConfig().getConnection();
     await Migrations.doMigrations(tables: listTables);
   }
